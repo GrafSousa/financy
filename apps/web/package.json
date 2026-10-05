@@ -13,7 +13,7 @@
     "test:e2e:infra:up": "docker compose --env-file src/tests/e2e/.env.e2e --file src/tests/e2e/compose.e2e.yaml --project-name financy-web-e2e up --detach --wait",
     "test:e2e:infra:down": "docker compose --env-file src/tests/e2e/.env.e2e --file src/tests/e2e/compose.e2e.yaml --project-name financy-web-e2e down --volumes --remove-orphans",
     "test:e2e:migrate": "set -a && . src/tests/e2e/.env.e2e && set +a && pnpm --filter @financy/api exec prisma migrate deploy",
-    "check-types": "tsc --noEmit"
+    "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "1.8.0",
