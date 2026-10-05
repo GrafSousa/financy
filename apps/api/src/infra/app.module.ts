@@ -20,12 +20,14 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     HttpModule,
     HealthModule,
     EnvModule,
-    // Distributed tracing, auto-correlated logs, request/job metrics, error
-    // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
-    ObserveModule.forRoot({
-      appKey: 'YOUR_APP_KEY',
-      appSecret: 'YOUR_APP_SECRET',
-      serviceId: 'api',
+    ObserveModule.forRootAsync({
+      imports: [EnvModule],
+      inject: [EnvService],
+      useFactory: (config: EnvService) => ({
+        appKey: config.get('NESTJS_OBSERVE_APP_KEY'),
+        appSecret: config.get('NESTJS_OBSERVE_APP_SECRET'),
+        serviceId: config.get('NESTJS_OBSERVE_SERVICE_ID'),
+      }),
     }),
   ],
 })
