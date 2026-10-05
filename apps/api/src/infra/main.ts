@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
 import { EnvService } from './env/env.service.js';
@@ -21,4 +22,7 @@ async function bootstrap() {
   await app.listen(port);
 }
 
-bootstrap();
+bootstrap().catch((error: unknown) => {
+  Logger.error(error, undefined, 'Bootstrap');
+  process.exitCode = 1;
+});
