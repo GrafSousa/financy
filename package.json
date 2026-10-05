@@ -6,7 +6,19 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "check-types": "turbo run check-types",
+    "infra:up": "pnpm --filter @financy/api infra:up",
+    "infra:down": "pnpm --filter @financy/api infra:down",
+    "infra:logs": "pnpm --filter @financy/api infra:logs",
+    "db:generate": "pnpm --filter @financy/api db:generate",
+    "db:migrate:dev": "pnpm --filter @financy/api db:migrate:dev",
+    "test:e2e:web": "pnpm --filter @financy/web test:e2e:run",
+    "test:unit:api": "pnpm --filter @financy/api test",
+    "test:unit:api:watch": "pnpm --filter @financy/api test:watch",
+    "test:unit:api:cov": "pnpm --filter @financy/api test:cov",
+    "test:e2e:api": "pnpm --filter @financy/api test:e2e",
+    "test:e2e:api:watch": "pnpm --filter @financy/api test:e2e:watch"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +26,13 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.21.0",
+      "version": "11.21.0",
       "onFail": "download"
     }
   },
-  "type": "module"
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "turbo": "2.11.2"
+  }
 }
