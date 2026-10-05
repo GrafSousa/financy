@@ -11,6 +11,6 @@ import { UsersRepository } from '@/domain/finance/application/repositories/users
       useClass: PrismaUsersRepository,
     },
   ],
-  exports: [UsersRepository],
+  exports: [PrismaService, UsersRepository],
 })
 export class DatabaseModule {}

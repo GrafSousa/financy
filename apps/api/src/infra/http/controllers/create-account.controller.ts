@@ -7,16 +7,11 @@ import {
   Controller,
   Post,
 } from '@nestjs/common';
-import z from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-
-const createAccountSchema = z.object({
-  name: z.string(),
-  email: z.string(),
-  password: z.string().min(6),
-});
-
-type CreateAccountDto = z.infer<typeof createAccountSchema>;
+import {
+  createAccountSchema,
+  type CreateAccountRequest,
+} from '@financy/contracts';
 
 const bodyValidationPipe = new ZodValidationPipe(createAccountSchema);
 
@@ -25,7 +20,7 @@ export class CreateAccountController {
   constructor(private registerUser: RegisterUserUseCase) {}
 
   @Post()
-  async handle(@Body(bodyValidationPipe) body: CreateAccountDto) {
+  async handle(@Body(bodyValidationPipe) body: CreateAccountRequest) {
     const result = await this.registerUser.execute(body);
 
     if (result.isLeft()) {
