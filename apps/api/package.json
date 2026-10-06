@@ -21,7 +21,7 @@
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "test:e2e:watch": "vitest --config ./vitest.config.e2e.ts",
     "check-types": "tsc --noEmit",
-    "infra:up": "docker compose up -d",
+    "infra:up": "docker compose up --detach --wait",
     "infra:down": "docker compose down",
     "infra:logs": "docker compose logs -f postgres",
     "db:generate": "prisma generate",

@@ -26,23 +26,82 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
+
       - name: Setup node
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
           cache-dependency-path: 'pnpm-lock.yaml'
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Generate Prisma Client
         run: pnpm db:generate
+
       - name: Run Lint
         run: pnpm lint
+
       - name: Check Typescript
         run: pnpm check-types
+
       - name: Run API unit tests
         run: pnpm test:unit:api
+
       - name: Build Applications
         run: pnpm build
+  api-e2e:
+    name: Backend e2e tests
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 15
+
+    env:
+      NODE_ENV: test
+      CORS_ORIGIN: http://localhost:3000
+      PORT: 3333
+
+      POSTGRES_DB: financy_api_e2e
+      POSTGRES_USER: financy_api_e2e
+      POSTGRES_PASSWORD: financy_api_e2e
+      DATABASE_URL: postgres://financy_api_e2e:financy_api_e2e@localhost:5432/financy_api_e2e
+
+      NESTJS_OBSERVE_SERVICE_ID: e2e-service-id
+      NESTJS_OBSERVE_APP_KEY: e2e-app-key
+      NESTJS_OBSERVE_APP_SECRET: e2e-app-secret
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared contracts
+        run: pnpm --filter @financy/contracts build
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Start PostgreSQL
+        run: pnpm infra:up
+
+      - name: Run API e2e tests
+        run: pnpm test:e2e:api
+
+      - name: Stop API E2E database
+        if: always()
+        run: pnpm infra:down
