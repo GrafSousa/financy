@@ -105,3 +105,56 @@ jobs:
       - name: Stop API E2E database
         if: always()
         run: pnpm infra:down
+  web-e2e:
+    name: Frontend e2e tests
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 20
+    env:
+      POSTGRES_DB: financy_e2e
+      POSTGRES_USER: postgres_ci_user_e2e
+      POSTGRES_PASSWORD: financy_ci_password_e2e
+      DATABASE_URL: postgres://postgres_ci_user_e2e:financy_ci_password_e2e@localhost:5433/financy_e2e
+      E2E_DATABASE_CLEANUP_ENABLED: 'true'
+      PORT: 3334
+      CORS_ORIGIN: http://localhost:3001
+      CI: 'true'
+      NEXT_PUBLIC_API_URL: http://localhost:3334
+      E2E_BASE_URL: http://localhost:3001
+      WEB_PORT: 3001
+      NODE_ENV: test
+      NESTJS_OBSERVE_SERVICE_ID: e2e-service-id
+      NESTJS_OBSERVE_APP_KEY: e2e-app-key
+      NESTJS_OBSERVE_APP_SECRET: e2e-app-secret
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared contracts
+        run: pnpm --filter @financy/contracts build
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Install Playwright browser
+        run: pnpm --filter @financy/web exec playwright install --with-deps chromium
+
+      - name: Run frontend E2E tests
+        run: pnpm test:e2e:web
+
+      - name: Stop frontend E2E infrastructure
+        if: always()
+        run: pnpm --filter @financy/web test:e2e:infra:down
