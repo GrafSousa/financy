@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import { Field } from '@base-ui/react/field';
 import { tv, VariantProps } from 'tailwind-variants';
 
-const inputVariants = tv({
+export const inputVariants = tv({
   base: 'font-sans font-normal transition-all',
   slots: {
     root: 'flex flex-col w-full gap-2',
@@ -88,10 +88,20 @@ function InputSuffix(props: InputSuffixProps) {
 
 type InputHelperTextProps = Field.Description.Props;
 
-function InputHelperText(props: InputHelperTextProps) {
+function InputHelperText({ className, ...rest }: InputHelperTextProps) {
   const { helper } = inputVariants();
 
-  return <Field.Description className={helper()} {...props} />;
+  return (
+    <Field.Description
+      className={(state) =>
+        helper({
+          className:
+            typeof className === 'function' ? className(state) : className,
+        })
+      }
+      {...rest}
+    />
+  );
 }
 
 export const Input = {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
+import { Providers } from '@/providers/providers';
 
 const interSans = Inter({
   variable: '--font-inter-sans-next',
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang='pt' className={`${interSans.variable}  h-full antialiased`}>
-      <body className='min-h-full flex flex-col bg-gray-100'>{children}</body>
+      <body className='min-h-full flex flex-col bg-gray-100'>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
