@@ -16,5 +16,71 @@ model User {
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime? @updatedAt @map("updated_at")
 
+  transactions Transaction[]
+  categories   Category[]
+  accounts     Account[]
+
   @@map("users")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id         String @id @default(uuid())
+  userId     String @map("user_id")
+  categoryId String @map("category_id")
+  accountId  String @map("account_id")
+
+  description String
+  type        TransactionType
+  value       Int
+
+  user     User     @relation(fields: [userId], references: [id])
+  account  Account  @relation(fields: [accountId, userId], references: [id, userId])
+  category Category @relation(fields: [categoryId, userId], references: [id, userId])
+
+  createdAt  DateTime  @default(now()) @map("created_at")
+  occurredAt DateTime  @map("occurred_at")
+  updatedAt  DateTime? @updatedAt @map("updated_at")
+
+  @@map("transactions")
+}
+
+model Category {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+
+  name        String
+  description String?
+  icon        String
+  color       String
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+
+  @@unique([userId, name])
+  @@unique([id, userId])
+  @@map("categories")
+}
+
+model Account {
+  id      String @id @default(uuid())
+  userId  String @map("user_id")
+  name    String
+  balance Int    @default(0)
+
+  transactions Transaction[]
+  user         User          @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  @@unique([id, userId])
+  @@map("accounts")
 }

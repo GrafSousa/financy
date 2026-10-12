@@ -8,3 +8,8 @@ export {
   type AuthenticateUserRequest,
   type AuthenticateUserResponse,
 } from './auth/authenticate-schema.js';
+
+export {
+  CreateCategoryRequest,
+  createCategorySchema,
+} from './categories/create-category.schema.js';
