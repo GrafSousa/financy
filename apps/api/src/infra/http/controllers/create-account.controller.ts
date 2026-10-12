@@ -12,6 +12,7 @@ import {
   createAccountSchema,
   type CreateAccountRequest,
 } from '@financy/contracts';
+import { Public } from '@nestjs/authentication';
 
 const bodyValidationPipe = new ZodValidationPipe(createAccountSchema);
 
@@ -19,6 +20,7 @@ const bodyValidationPipe = new ZodValidationPipe(createAccountSchema);
 export class CreateAccountController {
   constructor(private registerUser: RegisterUserUseCase) {}
 
+  @Public()
   @Post()
   async handle(@Body(bodyValidationPipe) body: CreateAccountRequest) {
     const result = await this.registerUser.execute(body);

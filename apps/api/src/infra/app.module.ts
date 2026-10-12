@@ -8,6 +8,8 @@ import { HealthModule } from './health/health.module';
 import { EnvModule } from './env/env.module';
 import { envSchema } from './env/env';
 import { EnvService } from './env/env.service';
+import { AuthenticationModule } from '@nestjs/authentication';
+import { AuthModule } from './auth/auth.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -17,9 +19,17 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
+    AuthenticationModule.forRoot({
+      session: {
+        absoluteTtl: '14d',
+        idleTtl: '3d',
+        trustedOrigins: ['http://localhost:3000'],
+      },
+    }),
     HttpModule,
     HealthModule,
     EnvModule,
+    AuthModule,
     ObserveModule.forRootAsync({
       imports: [EnvModule],
       inject: [EnvService],
