@@ -12,6 +12,18 @@ import { normalizeString } from '@financy/utils';
 export class PrismaCategoriesRepository implements CategoriesRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findManyByUserId(userId: string): Promise<Category[]> {
+    const categories = await this.prisma.category.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return categories.map((category) =>
+      PrismaCategoryMapper.toDomain(category),
+    );
+  }
+
   async create(category: Category): Promise<void> {
     const data = PrismaCategoryMapper.toPrisma(category);
 
