@@ -18,6 +18,11 @@ export const buttonVariants = tv({
         'bg-transparent text-gray-700 border border-gray-300 hover:bg-gray-200',
         'focus-within:ring-2 focus-visible:ring-gray-400/50',
       ],
+      ghost: [
+        'border-none',
+        'hover:bg-gray-200 shadow-none',
+        'focus-within:ring-2 focus-visible:ring-gray-400/50',
+      ],
     },
     size: {
       md: 'text-base px-4 py-3',
@@ -30,7 +35,7 @@ export const buttonVariants = tv({
   },
 });
 
-type ButtonVariants = VariantProps<typeof buttonVariants>;
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 type ButtonProps = React.ComponentProps<'button'> & ButtonVariants;
 
