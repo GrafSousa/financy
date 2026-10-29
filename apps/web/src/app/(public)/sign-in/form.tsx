@@ -1,50 +1,43 @@
 'use client';
-import { z } from 'zod';
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import {
-  Eye,
-  EyeClosed,
-  LoaderCircle,
-  Lock,
-  Mail,
-  UserRound,
-} from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { Form as BaseForm } from '@base-ui/react/form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeClosed, LoaderCircle, Lock, Mail } from 'lucide-react';
+import {
+  AuthenticateUserRequest,
+  authenticateUserSchema,
+} from '@financy/contracts';
 
-import { Input } from '@/components/input';
 import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useCreateSession } from '@/hooks/useAuthApi';
 
-import { useCreateAccount } from '@/hooks/useAccountsApi';
-import { CreateAccountRequest, createAccountSchema } from '@financy/contracts';
-
-export function RegisterForm() {
+export function SignInForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const { mutate, isPending } = useCreateAccount();
+  const { mutate, isPending } = useCreateSession();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(authenticateUserSchema),
   });
 
-  async function onSubmit(data: CreateAccountRequest) {
+  async function onSubmit(data: AuthenticateUserRequest) {
     mutate(data, {
       onSuccess: () => {
-        toast.success('Usuário criado com sucesso.');
-        router.push('/sign-in');
+        router.replace('/dashboard');
       },
       onError: (response) => {
         console.error(response);
 
         toast.error(
-          'Não foi possível concluir o cadastro. Verifique os dados ou tente acessar sua conta.',
+          'Não foi possível realizar o login. Verifique os dados ou tente novamente mais tarde.',
         );
       },
     });
@@ -52,28 +45,10 @@ export function RegisterForm() {
 
   return (
     <BaseForm
-      id='create-account-form'
-      onSubmit={handleSubmit(onSubmit)}
       className='col-span-4 w-full space-y-4'
+      id='sign-in-form'
+      onSubmit={handleSubmit(onSubmit)}
     >
-      <Input.Root>
-        <Input.Label>Nome completo</Input.Label>
-        <Input.Content>
-          <Input.Prefix>
-            <UserRound size={16} />
-          </Input.Prefix>
-          <Input.Control
-            placeholder='Seu nome completo'
-            {...register('name')}
-          />
-        </Input.Content>
-        {errors.name && (
-          <Input.HelperText className='text-feedback-danger'>
-            Campo obrigatório
-          </Input.HelperText>
-        )}
-      </Input.Root>
-
       <Input.Root>
         <Input.Label>E-mail</Input.Label>
         <Input.Content>
@@ -85,6 +60,7 @@ export function RegisterForm() {
             {...register('email')}
           />
         </Input.Content>
+
         {errors.email && (
           <Input.HelperText className='text-feedback-danger'>
             Campo obrigatório
@@ -98,16 +74,21 @@ export function RegisterForm() {
           <Input.Prefix>
             <Lock size={16} />
           </Input.Prefix>
+
           <Input.Control
-            placeholder='Digite sua senha'
             type={showPassword ? 'text' : 'password'}
+            placeholder='Digite sua senha'
             {...register('password')}
           />
-          <Input.Suffix
-            className='cursor-pointer transition-all p-1 rounded-full hover:bg-gray-200/50  '
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+
+          <Input.Suffix>
+            <button
+              type='button'
+              className='px-1 py-1 rounded-lg outline-none flex items-center justify-center cursor-pointer focus:ring-2 focus:ring-brand-dark/70'
+              onClick={() => setShowPassword((state) => !state)}
+            >
+              {showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+            </button>
           </Input.Suffix>
         </Input.Content>
 
@@ -118,14 +99,14 @@ export function RegisterForm() {
         )}
       </Input.Root>
 
-      <Button type='submit' form='create-account-form' disabled={isPending}>
+      <Button type='submit' form='sign-in-form' disabled={isPending}>
         {isPending ? (
           <>
             <span>Carregando...</span>
             <LoaderCircle size={16} className='animate-spin' />
           </>
         ) : (
-          'Cadastrar'
+          'Entrar'
         )}
       </Button>
     </BaseForm>
