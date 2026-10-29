@@ -5,7 +5,7 @@ const iconButtonVariants = tv({
   slots: {
     button: [
       'group p-2 inline-flex items-center justify-center bg-transparent transition-all',
-      'text-gray-700 cursor-pointer hover:bg-gray-200',
+      'outline-none text-gray-700 cursor-pointer hover:bg-gray-200 focus-within:ring-2',
       'disabled:cursor-not-allowed disabled:bg-white/50 disabled:text-gray-700/50',
     ],
     icon: '',
@@ -62,7 +62,7 @@ export function IconButton(props: IconButtonProps) {
   });
 
   return (
-    <button className={button()} {...rest}>
+    <button className={button({ className })} {...rest}>
       <Icon className={icon()} />
     </button>
   );
