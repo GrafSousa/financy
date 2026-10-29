@@ -8,15 +8,31 @@ export class FetchClient implements HttpClient {
   }
 
   private async request<T>(url: string, config?: RequestInit): Promise<T> {
-    const response = await fetch(url, {
+    const response = await fetch(`${this.baseUrl}/${url}`, {
       ...config,
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
     });
 
     if (!response.ok) {
       const errorData = await response.json();
+
+      if (
+        errorData.statusCode === 401 &&
+        url !== 'sessions' &&
+        typeof window !== 'undefined'
+      ) {
+        await fetch(`${this.baseUrl}/sign-out`, {
+          method: 'POST',
+          credentials: 'include',
+        });
+
+        window.location.replace('/sign-in');
+
+        throw new Error(errorData);
+      }
 
       throw new Error(errorData);
     }
