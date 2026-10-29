@@ -52,7 +52,9 @@ describe('e2e: Authenticate', () => {
 
     expect(cookies).toBeDefined();
     expect(cookies).toEqual(
-      expect.arrayContaining([expect.stringContaining('__Host-sid=')]),
+      expect.arrayContaining([
+        expect.stringContaining('__Host-financy-session='),
+      ]),
     );
   });
 });

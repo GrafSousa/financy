@@ -24,6 +24,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
         absoluteTtl: '14d',
         idleTtl: '3d',
         trustedOrigins: ['http://localhost:3000'],
+        cookieName: '__Host-financy-session',
       },
     }),
     HttpModule,

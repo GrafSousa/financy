@@ -45,6 +45,7 @@ export class AuthenticateController {
     }
 
     const { user } = result.value;
+
     await this.signInService.signIn(user.id.toString(), {
       method: 'password',
     });
