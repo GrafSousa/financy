@@ -9,6 +9,8 @@ import { CreateCategoryController } from './controllers/create-category.controll
 import { CreateCategoryUseCase } from '@/domain/finance/application/use-cases/create-category';
 import { FetchCategoriesController } from './controllers/fetch-categories.controller';
 import { FetchCategoriesUseCase } from '@/domain/finance/application/use-cases/fetch-categories';
+import { DeleteCategoryController } from './controllers/delete-category.controller';
+import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/delete-category';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { FetchCategoriesUseCase } from '@/domain/finance/application/use-cases/f
     AuthenticateController,
     CreateCategoryController,
     FetchCategoriesController,
+    DeleteCategoryController,
   ],
   providers: [
     RegisterUserUseCase,
     ValidateUserUseCase,
     CreateCategoryUseCase,
     FetchCategoriesUseCase,
+    DeleteCategoryUseCase,
   ],
 })
 export class HttpModule {}
