@@ -11,6 +11,8 @@ import { FetchCategoriesController } from './controllers/fetch-categories.contro
 import { FetchCategoriesUseCase } from '@/domain/finance/application/use-cases/fetch-categories';
 import { DeleteCategoryController } from './controllers/delete-category.controller';
 import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/delete-category';
+import { EditCategoryController } from './controllers/edit-category.controller';
+import { EditCategoryUseCase } from '@/domain/finance/application/use-cases/edit-category';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -20,6 +22,7 @@ import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/de
     CreateCategoryController,
     FetchCategoriesController,
     DeleteCategoryController,
+    EditCategoryController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -27,6 +30,7 @@ import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/de
     CreateCategoryUseCase,
     FetchCategoriesUseCase,
     DeleteCategoryUseCase,
+    EditCategoryUseCase,
   ],
 })
 export class HttpModule {}
