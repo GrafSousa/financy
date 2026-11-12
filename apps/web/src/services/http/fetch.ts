@@ -46,9 +46,28 @@ export class FetchClient implements HttpClient {
   }
 
   async post(url: string, data: unknown): Promise<Response> {
-    return this.request(`${this.baseUrl}/${url}`, {
+    return this.request(url, {
       method: 'POST',
       body: JSON.stringify(data),
+    });
+  }
+
+  put(url: string, data?: unknown): Promise<Response> {
+    return this.request(url, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async get<T>(url: string): Promise<T> {
+    return this.request(url, {
+      method: 'GET',
+    });
+  }
+
+  delete<T>(url: string): Promise<T> {
+    return this.request(url, {
+      method: 'DELETE',
     });
   }
 }
