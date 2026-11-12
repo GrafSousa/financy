@@ -46,4 +46,37 @@ export class PrismaCategoriesRepository implements CategoriesRepository {
 
     return PrismaCategoryMapper.toDomain(category);
   }
+
+  async delete(category: Category): Promise<void> {
+    await this.prisma.category.delete({
+      where: {
+        id: category.id.toString(),
+      },
+    });
+  }
+
+  async findById(categoryId: string): Promise<Category | null> {
+    const category = await this.prisma.category.findUnique({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    if (!category) {
+      return null;
+    }
+
+    return PrismaCategoryMapper.toDomain(category);
+  }
+
+  async save(category: Category): Promise<void> {
+    const data = PrismaCategoryMapper.toPrisma(category);
+
+    await this.prisma.category.update({
+      data,
+      where: {
+        id: data.id,
+      },
+    });
+  }
 }

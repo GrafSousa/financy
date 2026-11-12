@@ -35,4 +35,32 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
 
     return category;
   }
+
+  async findById(categoryId: string): Promise<Category | null> {
+    const category = this.items.find(
+      (item) => item.id.toString() === categoryId,
+    );
+
+    if (!category) {
+      return null;
+    }
+
+    return category;
+  }
+
+  async delete(category: Category): Promise<void> {
+    const itemIndex = this.items.findIndex((item) =>
+      item.id.equals(category.id),
+    );
+
+    this.items.splice(itemIndex, 1);
+  }
+
+  async save(category: Category): Promise<void> {
+    const itemIndex = this.items.findIndex((item) =>
+      item.id.equals(category.id),
+    );
+
+    this.items[itemIndex] = category;
+  }
 }
