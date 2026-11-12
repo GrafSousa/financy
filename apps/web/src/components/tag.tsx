@@ -28,7 +28,7 @@ type TagProps = TagVariants &
 export function Tag({ title, color, className, ...rest }: TagProps) {
   return (
     <div className={tagVariants({ color, className })} {...rest}>
-      <span>{title}</span>
+      <span className='truncate'>{title}</span>
     </div>
   );
 }
