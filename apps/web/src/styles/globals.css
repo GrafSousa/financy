@@ -51,6 +51,8 @@
   --color-green-dark: #15803d;
   --color-green-base: #16a34a;
   --color-green-light: #e0fae9;
+
+  --grid-template-columns-app: repeat(12, 1fr);
 }
 
 @theme inline {
