@@ -13,3 +13,14 @@ export {
   CreateCategoryRequest,
   createCategorySchema,
 } from './categories/create-category.schema.js';
+
+export {
+  DeleteCategoryRequest,
+  deleteCategorySchema,
+} from './categories/delete-category.schema.js';
+
+export {
+  EditCategoryRequest,
+  editCategorySchema,
+} from './categories/edit-category.schema.js';
+
