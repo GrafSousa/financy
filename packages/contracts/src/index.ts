@@ -24,3 +24,4 @@ export {
   editCategorySchema,
 } from './categories/edit-category.schema.js';
 
+export { categoryColors, CategoryColor } from './categories/colors.js';
