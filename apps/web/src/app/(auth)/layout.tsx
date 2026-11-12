@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { Header } from './_components/header';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -6,9 +6,9 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className='flex flex-col gap-8 items-center justify-center min-h-screen w-full'>
-      <Image src='/logo.svg' width={134} height={32} alt='logo' />
-      {children}
+    <div className='min-h-screen flex flex-col'>
+      <Header />
+      <main className='flex-1 flex flex-col p-12 bg-gray-100'>{children}</main>
     </div>
   );
 }
