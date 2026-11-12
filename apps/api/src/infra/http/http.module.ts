@@ -9,6 +9,7 @@ import { CreateCategoryController } from './controllers/create-category.controll
 import { CreateCategoryUseCase } from '@/domain/finance/application/use-cases/create-category';
 import { FetchCategoriesController } from './controllers/fetch-categories.controller';
 import { FetchCategoriesUseCase } from '@/domain/finance/application/use-cases/fetch-categories';
+import { SignOutController } from './controllers/sign-out.controller';
 import { DeleteCategoryController } from './controllers/delete-category.controller';
 import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/delete-category';
 import { EditCategoryController } from './controllers/edit-category.controller';
@@ -21,6 +22,7 @@ import { EditCategoryUseCase } from '@/domain/finance/application/use-cases/edit
     AuthenticateController,
     CreateCategoryController,
     FetchCategoriesController,
+    SignOutController,
     DeleteCategoryController,
     EditCategoryController,
   ],
