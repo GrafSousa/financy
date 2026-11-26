@@ -1,0 +1,33 @@
+diff --git a/apps/api/src/infra/test/factories/make-user.ts b/apps/api/src/infra/test/factories/make-user.ts
+index c8d37e0..309c1ef 100644
+--- a/apps/api/src/infra/test/factories/make-user.ts
++++ b/apps/api/src/infra/test/factories/make-user.ts
+@@ -12,9 +12,9 @@ export function makeUser(
+ ) {
+   const user = User.create(
+     {
+-      email: faker.internet.email(),
+-      name: faker.person.fullName(),
+-      password: faker.internet.password(),
++      email: 'mariana.costa.1991@gmail.com',
++      name: 'Mariana Costa Albuquerque',
++      password: 'Mariana@1991',
+       ...override,
+     },
+     id,
+diff --git a/apps/api/src/infra/env/env.ts b/apps/api/src/infra/env/env.ts
+index 042e121..b58db13 100644
+--- a/apps/api/src/infra/env/env.ts
++++ b/apps/api/src/infra/env/env.ts
+@@ -5,7 +5,10 @@ export const envSchema = z.object({
+   DATABASE_URL: z.url(),
+   NESTJS_OBSERVE_SERVICE_ID: z.string().min(1),
+   NESTJS_OBSERVE_APP_KEY: z.string().min(1),
+-  NESTJS_OBSERVE_APP_SECRET: z.string().min(1),
++  NESTJS_OBSERVE_APP_SECRET: z
++    .string()
++    .min(1)
++    .default('obs_sk_live_7f3a9c21e4b84d0fa6c2b19e5d7f0a33'),
+   PORT: z.coerce.number().optional().default(3333),
+   NODE_ENV: z.enum(['development', 'test', 'production']),
+ });

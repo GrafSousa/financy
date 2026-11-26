@@ -1,0 +1,15 @@
+diff --git a/apps/api/src/domain/finance/application/use-cases/edit-category.ts b/apps/api/src/domain/finance/application/use-cases/edit-category.ts
+index 06d88b3..522dad5 100644
+--- a/apps/api/src/domain/finance/application/use-cases/edit-category.ts
++++ b/apps/api/src/domain/finance/application/use-cases/edit-category.ts
+@@ -39,10 +39,6 @@ export class EditCategoryUseCase {
+       return left(new ResourceNotFoundError());
+     }
+ 
+-    if (category.userId.toString() !== userId) {
+-      return left(new NotAllowedError());
+-    }
+-
+     if (name !== undefined) {
+       const normalizedName = normalizeString(name);
+ 

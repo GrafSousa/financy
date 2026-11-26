@@ -1,0 +1,30 @@
+diff --git a/apps/api/src/infra/http/controllers/delete-category.controller.ts b/apps/api/src/infra/http/controllers/delete-category.controller.ts
+index 1862eb8..9570930 100644
+--- a/apps/api/src/infra/http/controllers/delete-category.controller.ts
++++ b/apps/api/src/infra/http/controllers/delete-category.controller.ts
+@@ -1,10 +1,9 @@
+ import { NotAllowedError } from '@/core/errors/not-allowed-error';
+ import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
+ import { DeleteCategoryUseCase } from '@/domain/finance/application/use-cases/delete-category';
+-import { User } from '@/domain/finance/enterprise/entities/user';
+-import { CurrentUser } from '@nestjs/authentication';
+ import {
+   BadRequestException,
++  Body,
+   Controller,
+   Delete,
+   ForbiddenException,
+@@ -19,9 +18,10 @@ export class DeleteCategoryController {
+ 
+   @Delete()
+   @HttpCode(204)
+-  async handle(@Param('id') categoryId: string, @CurrentUser() user: User) {
+-    const userId = user.id.toString();
+-
++  async handle(
++    @Param('id') categoryId: string,
++    @Body('userId') userId: string,
++  ) {
+     const result = await this.deleteCategoryUseCase.execute({
+       categoryId,
+       userId,
