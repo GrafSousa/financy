@@ -24,6 +24,8 @@ You receive a diff, list of files. If no diff or files are given, review the cha
 
 Only review files under `apps/api/` and `packages/contracts/`.
 
+Use Read, Grep and Glob to read files. Use Bash only for `git diff/log/show` and the API tests.
+
 # What to check
 
 1. List the changed files and find which layers they touch (core, domain, infra, contracts).
@@ -40,6 +42,7 @@ Only review files under `apps/api/` and `packages/contracts/`.
 - Don't edit files.
 - Don't create files.
 - Don't delete files.
+- Never write a secrets value or personal data anywhere in the report, including code snippets. Replace it with the first 4 characters + `****` (e.g. `'obs_****'`).
 
 # Severity
 
