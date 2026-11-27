@@ -1,0 +1,45 @@
+diff --git a/apps/api/src/domain/finance/application/use-cases/get-category.ts b/apps/api/src/domain/finance/application/use-cases/get-category.ts
+new file mode 100644
+index 0000000..6814767
+--- /dev/null
++++ b/apps/api/src/domain/finance/application/use-cases/get-category.ts
+@@ -0,0 +1,39 @@
++import { Injectable } from '@nestjs/common';
++import { CategoriesRepository } from '../repositories/categories-repository';
++import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error';
++import { Either, left, right } from '@/core/either';
++import { UniqueEntityId } from '@/core/entities/unique-entity-id';
++import { NotAllowedError } from '@/core/errors/not-allowed-error';
++import { Category } from '../../enterprise/entities/category';
++
++interface GetCategoryRequest {
++  userId: string;
++  categoryId: string;
++}
++
++type GetCategoryResponse = Either<
++  ResourceNotFoundError | NotAllowedError,
++  { category: Category }
++>;
++
++@Injectable()
++export class GetCategoryUseCase {
++  constructor(private categoriesRepository: CategoriesRepository) {}
++
++  async execute({
++    userId,
++    categoryId,
++  }: GetCategoryRequest): Promise<GetCategoryResponse> {
++    const category = await this.categoriesRepository.findById(categoryId);
++
++    if (!category) {
++      return left(new ResourceNotFoundError());
++    }
++
++    if (!category.userId.equals(new UniqueEntityId(userId))) {
++      return left(new NotAllowedError());
++    }
++
++    return right({ category });
++  }
++}

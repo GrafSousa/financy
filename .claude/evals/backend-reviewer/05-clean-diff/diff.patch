@@ -1,0 +1,21 @@
+diff --git a/apps/api/src/domain/finance/application/use-cases/edit-category.ts b/apps/api/src/domain/finance/application/use-cases/edit-category.ts
+index 06d88b3..95f7b32 100644
+--- a/apps/api/src/domain/finance/application/use-cases/edit-category.ts
++++ b/apps/api/src/domain/finance/application/use-cases/edit-category.ts
+@@ -8,6 +8,7 @@ import { Category } from '../../enterprise/entities/category';
+ import { normalizeString } from '@financy/utils';
+ import { CategoryAlreadyExistsError } from './errors/category-already-exists-error';
+ import { Injectable } from '@nestjs/common';
++import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+ 
+ type EditCategoryUseCaseRequest = EditCategoryRequest & {
+   id: string;
+@@ -39,7 +40,7 @@ export class EditCategoryUseCase {
+       return left(new ResourceNotFoundError());
+     }
+ 
+-    if (category.userId.toString() !== userId) {
++    if (!category.userId.equals(new UniqueEntityId(userId))) {
+       return left(new NotAllowedError());
+     }
+ 
